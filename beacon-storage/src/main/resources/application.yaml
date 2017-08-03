@@ -1,0 +1,10 @@
+server:
+  port: 8089
+
+spring:
+  data:
+    mongodb:
+      database: beacon-storage
+      host: localhost
+      port: 27017
+  mandatory-file-encoding: UTF-8
