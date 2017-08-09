@@ -1,5 +1,7 @@
 package com.dnastack.beacon.adapter.variants
 
+import com.google.protobuf.ListValue
+import com.google.protobuf.Value
 import ga4gh.Metadata
 
 import static ga4gh.MetadataServiceOuterClass.SearchDatasetsRequest
@@ -19,22 +21,26 @@ public class TestData {
 
     def public static final TEST_CALL_SET_1 = CallSet.newBuilder()
             .setId("test-callset-1")
-            .setBioSampleId("test-bio-sample-1")
+            .setBiosampleId("test-bio-sample-1")
             .build()
 
     def public static final TEST_CALL_SET_2 = CallSet.newBuilder()
             .setId("test-callset-2")
-            .setBioSampleId("test-bio-sample-2")
+            .setBiosampleId("test-bio-sample-2")
             .build()
 
     def public static final TEST_CALL_1 = Call.newBuilder()
             .setCallSetId(TEST_CALL_SET_1.id)
-            .addAllGenotype([1, 2])
+            .setGenotype(ListValue.newBuilder()
+            .addValues(Value.newBuilder().setNumberValue(1.0))
+            .addValues(Value.newBuilder().setNumberValue(2.0)))
             .build()
 
     def public static final TEST_CALL_2 = Call.newBuilder()
             .setCallSetId(TEST_CALL_SET_2.id)
-            .addAllGenotype([3, 4])
+            .setGenotype(ListValue.newBuilder()
+            .addValues(Value.newBuilder().setNumberValue(3.0))
+            .addValues(Value.newBuilder().setNumberValue(4.0)))
             .build()
 
     def public static final TEST_VARIANT = Variant.newBuilder()
@@ -46,7 +52,7 @@ public class TestData {
 
     def public static final TEST_REFERENCE_SET = ReferenceSet.newBuilder()
             .setId("test-reference-set")
-            .setAssemblyId("test-assembly")
+            .setAssemblyId("GRCh37")
             .build()
 
     def public static final TEST_VARIANT_SET = VariantSet.newBuilder()

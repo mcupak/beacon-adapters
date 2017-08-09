@@ -57,7 +57,7 @@ class BeaconResponseTest extends BaseTest {
 
     private void checkAssertions(BeaconAlleleResponse response, BeaconAlleleRequest request) {
         assertThat(response.alleleRequest).isEqualTo(request)
-        assertThat(response.beaconId).isEqualTo(VariantsBeaconAdapter.SAMPLE_BEACON.id)
+        assertThat(response.beaconId).isEqualTo(BaseTest.ADAPTER.getBeacon().getId())
         assertThat(response.datasetAlleleResponses).hasSize(1)
         assertThat(response.error).isNull()
         assertThat(response.exists).isTrue()

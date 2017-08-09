@@ -1,7 +1,6 @@
-package com.dnastack.beacon.adapter.variants.tests.successful
+package com.dnastack.beacon.adapter.variants
 
 import com.dnastack.beacon.adapter.variants.BaseTest
-import com.dnastack.beacon.adater.variants.VariantsBeaconAdapter
 import org.ga4gh.beacon.BeaconAlleleRequest
 import org.ga4gh.beacon.BeaconAlleleResponse
 
@@ -43,7 +42,7 @@ class BeaconResponseWithoutDatasetResponsesTest extends BaseTest {
     }
 
     private void testGetMethod(BeaconAlleleRequest request) {
-        BeaconAlleleResponse getMethodResponse = ADAPTER.getBeaconAlleleResponse(
+        BeaconAlleleResponse getMethodResponse = BaseTest.ADAPTER.getBeaconAlleleResponse(
                 request.getReferenceName(),
                 request.getStart(),
                 request.getReferenceBases(),
@@ -55,7 +54,7 @@ class BeaconResponseWithoutDatasetResponsesTest extends BaseTest {
     }
 
     private void testPostMethod(BeaconAlleleRequest request) {
-        BeaconAlleleResponse postMethodResponse = ADAPTER.getBeaconAlleleResponse(request);
+        BeaconAlleleResponse postMethodResponse = BaseTest.ADAPTER.getBeaconAlleleResponse(request);
         checkAssertions(postMethodResponse, request)
     }
 
