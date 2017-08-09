@@ -12,17 +12,11 @@ import com.dnastack.beacon.utils.Reason;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.protobuf.ListValue;
-import ga4gh.Metadata.Dataset;
-import ga4gh.References.ReferenceSet;
-import ga4gh.Variants.Call;
-import ga4gh.Variants.CallSet;
-import ga4gh.Variants.Variant;
-import ga4gh.Variants.VariantSet;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ga4gh.beacon.*;
+import org.ga4gh.models.*;
 
 import javax.enterprise.context.Dependent;
 import java.io.File;
@@ -140,7 +134,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
 
         List<Variant> variants = map(variantSets,
                 variantSet -> loadVariants(datasetId,
-                        variantSet.getId(),
+                        variantSet.getId().toString(),
                         referenceName,
                         start)).stream()
                 .flatMap(Collection::stream)
@@ -151,7 +145,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
 
         Double frequency = calculateFrequency(alternateBases, variants);
         Long sampleCount = countSamples(datasetId, variants);
-        Long callsCount = variants.stream().mapToLong(Variant::getCallsCount).sum();
+        Long callsCount = variants.stream().map(Variant::getCalls).mapToLong(List::size).sum();
         long variantCount = variants.size();
         boolean exists = CollectionUtils.isNotEmpty(variants);
 
@@ -167,8 +161,9 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
 
     private Long countSamples(String datasetId, List<Variant> variants) throws BeaconAlleleRequestException {
         List<String> callSetIds = variants.stream()
-                .flatMap(variant -> variant.getCallsList().stream())
+                .flatMap(variant -> variant.getCalls().stream())
                 .map(Call::getCallSetId)
+                .map(CharSequence::toString)
                 .collect(Collectors.toList());
 
         List<CallSet> callSets = new ArrayList<>();
@@ -177,7 +172,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
             callSets.add(loadCallSet(datasetId, callSetId));
         }
 
-        return callSets.stream().map(CallSet::getBiosampleId).distinct().count();
+        return callSets.stream().map(CallSet::getSampleId).distinct().count();
     }
 
     private Double calculateFrequency(String alternateBases, List<Variant> variants) {
@@ -187,22 +182,22 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
                 .sum();
 
         Long totalGenotypesCount = variants.stream()
-                .flatMap(variant -> variant.getCallsList().stream())
+                .flatMap(variant -> variant.getCalls().stream())
                 .map(Call::getGenotype)
-                .mapToLong(ListValue::getValuesCount)
+                .mapToLong(List::size)
                 .sum();
 
         return (totalGenotypesCount == 0) ? null : ((double) matchingGenotypesCount / totalGenotypesCount);
     }
 
     private long calculateMatchingGenotypesCount(Variant variant, String alternateBases) {
-        int requestedGenotype = variant.getAlternateBasesList().indexOf(alternateBases) + 1;
+        int requestedGenotype = variant.getAlternateBases().indexOf(alternateBases) + 1;
 
-        return variant.getCallsList()
+        return variant.getCalls()
                 .stream()
                 .map(Call::getGenotype)
-                .flatMap(listValue -> listValue.getValuesList().stream())
-                .filter(genotype -> genotype.getNumberValue() == (double) requestedGenotype)
+                .flatMap(Collection::stream)
+                .filter(integer -> integer.equals(requestedGenotype))
                 .count();
     }
 
@@ -213,7 +208,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
     }
 
     private boolean referencesetMatchesVariantset(String datasetId, VariantSet variantSet, String assemblyId) throws BeaconAlleleRequestException {
-        ReferenceSet referenceSet = loadReferenceSet(datasetId, variantSet.getReferenceSetId());
+        ReferenceSet referenceSet = loadReferenceSet(datasetId, variantSet.getReferenceSetId().toString());
 
         Optional<Set<String>> assemblySynonyms = ASSEMBLY_ALIASES.stream()
                 .filter(bag -> containsCaseInsensitive(bag,
@@ -221,11 +216,11 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
                 .findAny();
 
         return assemblySynonyms.isPresent() ? containsCaseInsensitive(assemblySynonyms.get(),
-                referenceSet.getAssemblyId()) : false;
+                referenceSet.getAssemblyId().toString()) : false;
     }
 
     private boolean basesMatchVariant(Variant variant, String referenceBases, String alternateBases) {
-        return StringUtils.equals(variant.getReferenceBases(), referenceBases) && variant.getAlternateBasesList()
+        return StringUtils.equals(variant.getReferenceBases(), referenceBases) && variant.getAlternateBases()
                 .contains(alternateBases);
     }
 
@@ -234,7 +229,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
     }
 
     private List<String> loadAllDatasetIds() throws BeaconAlleleRequestException {
-        return loadAllDatasets().stream().map(Dataset::getId).collect(Collectors.toList());
+        return loadAllDatasets().stream().map(Dataset::getId).map(CharSequence::toString).collect(Collectors.toList());
     }
 
     private List<Dataset> loadAllDatasets() throws BeaconAlleleRequestException {

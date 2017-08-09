@@ -1,19 +1,13 @@
 package com.dnastack.beacon.adater.variants.client.ga4gh.retro;
 
-import ga4gh.References.ReferenceSet;
-import ga4gh.VariantServiceOuterClass.SearchVariantSetsRequest;
-import ga4gh.VariantServiceOuterClass.SearchVariantSetsResponse;
-import ga4gh.VariantServiceOuterClass.SearchVariantsRequest;
-import ga4gh.VariantServiceOuterClass.SearchVariantsResponse;
-import ga4gh.Variants.CallSet;
+import org.ga4gh.methods.*;
+import org.ga4gh.models.CallSet;
+import org.ga4gh.models.ReferenceSet;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-
-import static ga4gh.MetadataServiceOuterClass.SearchDatasetsRequest;
-import static ga4gh.MetadataServiceOuterClass.SearchDatasetsResponse;
 
 /**
  * @author Artem (tema.voskoboynick@gmail.com)

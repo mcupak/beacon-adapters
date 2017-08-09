@@ -6,8 +6,8 @@ import com.dnastack.beacon.utils.AdapterConfig
 import com.dnastack.beacon.utils.ConfigValue
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.google.protobuf.util.JsonFormat
-import ga4gh.Variants
 import org.apache.commons.lang.StringUtils
+import org.ga4gh.models.CallSet
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.AfterSuite
 import org.testng.annotations.BeforeSuite
@@ -149,7 +149,7 @@ public abstract class BaseTest {
         setupGetCallSetMapping(TEST_CALL_SET_2)
     }
 
-    private setupGetCallSetMapping(Variants.CallSet callSet) {
+    private setupGetCallSetMapping(CallSet callSet) {
         MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$CALL_SETS_GET_PATH/$callSet.id"))
 
                 .willReturn(aResponse()
