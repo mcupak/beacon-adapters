@@ -23,7 +23,7 @@ class BeaconResponseWithoutDatasetResponsesTest extends BaseTest {
         def referenceName = getSearchVariantsRequest().referenceName
         def start = getSearchVariantsRequest().start
         def referenceBases = getTestVariant().referenceBases
-        def alternateBases = getTestVariant().getAlternateBases(0)
+        def alternateBases = getTestVariant().getAlternateBases().get(0)
         def assemblyId = getTestReferenceSet().assemblyId
         def datasetIds = null
         def includeDatasetResponses = false
