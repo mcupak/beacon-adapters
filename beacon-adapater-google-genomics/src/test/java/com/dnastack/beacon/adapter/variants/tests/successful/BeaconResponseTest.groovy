@@ -16,11 +16,11 @@ class BeaconResponseTest extends BaseTest {
 
     @Override
     void doTest() {
-        def referenceName = SEARCH_VARIANTS_TEST_REQUEST.referenceName
-        def start = SEARCH_VARIANTS_TEST_REQUEST.start
-        def referenceBases = TEST_VARIANT.referenceBases
-        def alternateBases = TEST_VARIANT.getAlternateBases(0)
-        def assemblyId = TEST_REFERENCE_SET.assemblyId
+        def referenceName = getSearchVariantsRequest().referenceName
+        def start = getSearchVariantsRequest().start
+        def referenceBases = getTestVariant().referenceBases
+        def alternateBases = getTestVariant().getAlternateBases(0)
+        def assemblyId = getTestReferenceSet().assemblyId
         def datasetIds = null
         def includeDatasetResponses = true
 
@@ -65,8 +65,8 @@ class BeaconResponseTest extends BaseTest {
         def datasetResponse = response.datasetAlleleResponses.get(0)
         assertThat(datasetResponse.error).isNull()
         assertThat(datasetResponse.exists).isTrue()
-        assertThat(datasetResponse.callCount).isEqualTo(TEST_VARIANT.callsCount)
-        assertThat(datasetResponse.datasetId).isEqualTo(TEST_DATASET.id)
+        assertThat(datasetResponse.callCount).isEqualTo(getTestVariant().calls.size())
+        assertThat(datasetResponse.datasetId).isEqualTo(getTestDataset().id)
         assertThat(datasetResponse.frequency).isEqualTo(0.25d) // 4 total genotypes, only 1 matches (see test calls).
         assertThat(datasetResponse.sampleCount).isEqualTo(2) // 2 call sets with 2 distinct bio samples
         assertThat(datasetResponse.variantCount).isEqualTo(1) // 1 test variant

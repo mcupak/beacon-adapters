@@ -8,70 +8,112 @@ import org.ga4gh.models.*
  * @version 1.0
  */
 public class TestData {
-    def public static final TEST_DATASET = Dataset.newBuilder()
-            .setId("test-dataset")
-            .build()
 
-    def public static final TEST_CALL_SET_1 = CallSet.newBuilder()
-            .setId("test-callset-1")
-            .setSampleId("test-bio-sample-1")
-            .build()
+    static Dataset getTestDataset() {
+        Dataset dataset = new Dataset()
+        dataset.setId("test-dataset")
+        return dataset
+    }
 
-    def public static final TEST_CALL_SET_2 = CallSet.newBuilder()
-            .setId("test-callset-2")
-            .setSampleId("test-bio-sample-2")
-            .build()
+    static CallSet getTestCallSet1() {
+        CallSet callSet = new CallSet()
+        callSet.setId("test-callset-1")
+        callSet.setSampleId("test-bio-sample-1")
 
-    def public static final TEST_CALL_1 = Call.newBuilder()
-            .setCallSetId(TEST_CALL_SET_1.id)
-            .setGenotype([1, 2])
-            .build()
+        return callSet
+    }
 
-    def public static final TEST_CALL_2 = Call.newBuilder()
-            .setCallSetId(TEST_CALL_SET_2.id)
-            .setGenotype([3, 4])
-            .build()
+    static CallSet getTestCallSet2() {
+        CallSet callSet = new CallSet()
+        callSet.setId("test-callset-2")
+        callSet.setSampleId("test-bio-sample-2")
 
-    def public static final TEST_VARIANT = Variant.newBuilder()
-            .setId("test-variant")
-            .setReferenceBases("test-reference-bases")
-            .setAlternateBases(["test-alternate-base-1", "test-alternate-base-2", "test-alternate-base-3"])
-            .setCalls([TEST_CALL_1, TEST_CALL_2])
-            .build()
+        return callSet
+    }
 
-    def public static final TEST_REFERENCE_SET = ReferenceSet.newBuilder()
-            .setId("test-reference-set")
-            .setAssemblyId("GRCh37")
-            .build()
+    static Call getTestCall1() {
+        Call call = new Call()
+        call.setCallSetId(getTestCallSet1().id)
+        call.setGenotype([1, 2])
 
-    def public static final TEST_VARIANT_SET = VariantSet.newBuilder()
-            .setId("test-variant-set")
-            .setReferenceSetId(TEST_REFERENCE_SET.id)
-            .build()
+        return call
+    }
 
-    def public static final SEARCH_DATASET_TEST_RESPONSE = SearchDatasetsResponse.newBuilder()
-            .setDatasets([TEST_DATASET])
-            .build()
+    static Call getTestCall2() {
+        Call call = new Call()
+        call.setCallSetId(getTestCallSet2().id)
+        call.setGenotype([3, 4])
 
-    def public static final SEARCH_VARIANT_SETS_TEST_RESPONSE = SearchVariantSetsResponse.newBuilder()
-            .setVariantSets([TEST_VARIANT_SET])
-            .build()
+        return call
+    }
 
-    def public static final SEARCH_VARIANTS_TEST_RESPONSE = SearchVariantsResponse.newBuilder()
-            .setVariants([TEST_VARIANT])
-            .build()
+    static Variant getTestVariant() {
+        Variant variant = new Variant()
+        variant.setId("test-variant")
+        variant.setReferenceBases("test-reference-bases")
+        variant.setAlternateBases(["test-alternate-base-1", "test-alternate-base-2", "test-alternate-base-3"])
+        variant.setCalls([getTestCall1(), getTestCall2()])
 
-    def public static final SEARCH_DATASET_TEST_REQUEST = SearchDatasetsRequest.newBuilder()
-            .build()
+        return variant
+    }
 
-    def public static final SEARCH_VARIANT_SETS_TEST_REQUEST = SearchVariantSetsRequest.newBuilder()
-            .setDatasetIds([TEST_DATASET.id])
-            .build()
+    static ReferenceSet getTestReferenceSet() {
+        ReferenceSet referenceSet = new ReferenceSet()
+        referenceSet.setId("test-reference-set")
+        referenceSet.setAssemblyId("GRCh37")
 
-    def public static final SEARCH_VARIANTS_TEST_REQUEST = SearchVariantsRequest.newBuilder()
-            .setVariantSetIds([TEST_VARIANT_SET.id])
-            .setReferenceName("test-reference-name")
-            .setStart(100L)
-            .setEnd(101L)
-            .build()
+        return referenceSet
+    }
+
+    static VariantSet getTestVariantSet() {
+        VariantSet variantSet = new VariantSet()
+        variantSet.setId("test-variant-set")
+        variantSet.setReferenceSetId(getTestReferenceSet().id)
+        variantSet.setDatasetId(getTestDataset().id)
+
+        return variantSet
+    }
+
+    static SearchDatasetsResponse getSearchDatasetsResponse() {
+        SearchDatasetsResponse searchDatasetsResponse = new SearchDatasetsResponse()
+        searchDatasetsResponse.setDatasets([getTestDataset()])
+
+        return searchDatasetsResponse
+    }
+
+    static SearchVariantSetsResponse getSearchVariantSetsResponse() {
+        SearchVariantSetsResponse searchVariantSetsResponse = new SearchVariantSetsResponse()
+        searchVariantSetsResponse.setVariantSets([getTestVariantSet()])
+
+        return searchVariantSetsResponse
+    }
+
+    static SearchVariantsResponse getSearchVariantsResponse() {
+        SearchVariantsResponse searchVariantsResponse = new SearchVariantsResponse()
+        searchVariantsResponse.setVariants([getTestVariant()])
+
+        return searchVariantsResponse
+    }
+
+    static SearchDatasetsRequest getSearchDatasetsRequest() {
+        return new SearchDatasetsRequest()
+    }
+
+    static SearchVariantSetsRequest getSearchVariantSetsRequest() {
+        SearchVariantSetsRequest searchVariantSetsRequest = new SearchVariantSetsRequest()
+        searchVariantSetsRequest.setDatasetIds([getTestDataset().id])
+
+        return searchVariantSetsRequest
+    }
+
+    static SearchVariantsRequest getSearchVariantsRequest() {
+        SearchVariantsRequest searchVariantsRequest = new SearchVariantsRequest()
+        searchVariantsRequest.setVariantSetIds([getTestVariantSet().id])
+        searchVariantsRequest.setReferenceName("test-reference-name")
+        searchVariantsRequest.setStart(100L)
+        searchVariantsRequest.setEnd(101L)
+
+        return searchVariantsRequest
+    }
+
 }

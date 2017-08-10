@@ -20,11 +20,11 @@ class BeaconResponseWithoutDatasetResponsesTest extends BaseTest {
      */
     @Override
     void doTest() {
-        def referenceName = SEARCH_VARIANTS_TEST_REQUEST.referenceName
-        def start = SEARCH_VARIANTS_TEST_REQUEST.start
-        def referenceBases = TEST_VARIANT.referenceBases
-        def alternateBases = TEST_VARIANT.getAlternateBases(0)
-        def assemblyId = TEST_REFERENCE_SET.assemblyId
+        def referenceName = getSearchVariantsRequest().referenceName
+        def start = getSearchVariantsRequest().start
+        def referenceBases = getTestVariant().referenceBases
+        def alternateBases = getTestVariant().getAlternateBases(0)
+        def assemblyId = getTestReferenceSet().assemblyId
         def datasetIds = null
         def includeDatasetResponses = false
 

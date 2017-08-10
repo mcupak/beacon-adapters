@@ -1,6 +1,8 @@
 package com.dnastack.beacon.adapter.variants.utils
 
-import com.google.protobuf.util.JsonFormat
+import com.fasterxml.jackson.dataformat.avro.AvroMapper
+import com.fasterxml.jackson.dataformat.avro.AvroSchema
+import org.apache.avro.Schema
 
 /**
  * Json helper that is able to correctly convert protobuf objects to json.
@@ -10,7 +12,10 @@ import com.google.protobuf.util.JsonFormat
  */
 public class Json {
 
-    public static String toJson(Object src) {
-        return JsonFormat.printer().print(src)
+    public static String toJson(Object src, Schema schema) {
+        return new String(AvroMapper.newInstance()
+                .writer(new AvroSchema(schema))
+                .writeValueAsBytes(src))
     }
+
 }

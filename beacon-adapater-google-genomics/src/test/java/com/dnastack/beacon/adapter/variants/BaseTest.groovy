@@ -5,9 +5,10 @@ import com.dnastack.beacon.adater.variants.VariantsBeaconAdapter
 import com.dnastack.beacon.utils.AdapterConfig
 import com.dnastack.beacon.utils.ConfigValue
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.google.protobuf.util.JsonFormat
 import org.apache.commons.lang.StringUtils
+import org.ga4gh.methods.*
 import org.ga4gh.models.CallSet
+import org.ga4gh.models.ReferenceSet
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.AfterSuite
 import org.testng.annotations.BeforeSuite
@@ -109,50 +110,50 @@ public abstract class BaseTest {
         setupSearchDatasetMapping()
         setupSearchVariantSetsMapping()
         setupSearchVariantsMapping()
-        setupGetReferenceSetMapping()
+        setupGetReferenceSetMapping(getTestReferenceSet())
         setupGetCallSetMapping()
     }
 
     private setupSearchDatasetMapping() {
-        MOCK_GA4GH_SERVER.stubFor(post(urlEqualTo("/$DATASET_SEARCH_PATH"))
-                .withRequestBody(equalToJson(Json.toJson(SEARCH_DATASET_TEST_REQUEST)))
+        MOCK_GA4GH_SERVER.stubFor post(urlEqualTo("/$DATASET_SEARCH_PATH"))
+                .withRequestBody(equalToJson(Json.toJson(getSearchDatasetsRequest(), SearchDatasetsRequest.classSchema)))
 
                 .willReturn(aResponse()
-                .withBody(JsonFormat.printer().print(SEARCH_DATASET_TEST_RESPONSE))))
+                .withBody(Json.toJson(getSearchDatasetsResponse(), SearchDatasetsResponse.classSchema)))
     }
 
     private setupSearchVariantSetsMapping() {
         MOCK_GA4GH_SERVER.stubFor(post(urlEqualTo("/$VARIANT_SETS_SEARCH_PATH"))
-                .withRequestBody(equalToJson(Json.toJson(SEARCH_VARIANT_SETS_TEST_REQUEST)))
+                .withRequestBody(equalToJson(Json.toJson(getSearchVariantSetsRequest(), SearchVariantSetsRequest.classSchema)))
 
                 .willReturn(aResponse()
-                .withBody(Json.toJson(SEARCH_VARIANT_SETS_TEST_RESPONSE))))
+                .withBody(Json.toJson(getSearchVariantSetsResponse(), SearchVariantSetsResponse.classSchema))))
     }
 
     private setupSearchVariantsMapping() {
         MOCK_GA4GH_SERVER.stubFor(post(urlEqualTo("/$VARIANTS_SEARCH_PATH"))
-                .withRequestBody(equalToJson(Json.toJson(SEARCH_VARIANTS_TEST_REQUEST)))
+                .withRequestBody(equalToJson(Json.toJson(getSearchVariantsRequest(), SearchVariantsRequest.classSchema)))
 
                 .willReturn(aResponse()
-                .withBody(Json.toJson(SEARCH_VARIANTS_TEST_RESPONSE))))
+                .withBody(Json.toJson(getSearchVariantsResponse(), SearchVariantsResponse.classSchema))))
     }
 
-    private setupGetReferenceSetMapping() {
-        MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$REFERENCE_SETS_GET_PATH/$TEST_REFERENCE_SET.id"))
+    private setupGetReferenceSetMapping(ReferenceSet referenceSet) {
+        MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$REFERENCE_SETS_GET_PATH/$referenceSet.id"))
 
                 .willReturn(aResponse()
-                .withBody(Json.toJson(TEST_REFERENCE_SET))))
+                .withBody(Json.toJson(getTestReferenceSet(), ReferenceSet.classSchema))))
     }
 
     private setupGetCallSetMapping() {
-        setupGetCallSetMapping(TEST_CALL_SET_1)
-        setupGetCallSetMapping(TEST_CALL_SET_2)
+        setupGetCallSetMapping(getTestCallSet1())
+        setupGetCallSetMapping(getTestCallSet2())
     }
 
     private setupGetCallSetMapping(CallSet callSet) {
         MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$CALL_SETS_GET_PATH/$callSet.id"))
 
                 .willReturn(aResponse()
-                .withBody(Json.toJson(callSet))))
+                .withBody(Json.toJson(callSet, CallSet.classSchema))))
     }
 }
