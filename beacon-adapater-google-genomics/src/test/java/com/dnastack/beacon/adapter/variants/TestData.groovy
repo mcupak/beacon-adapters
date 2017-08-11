@@ -19,8 +19,12 @@ public class TestData {
         CallSet callSet = new CallSet()
         callSet.setId("test-callset-1")
         callSet.setSampleId("test-bio-sample-1")
-        callSet.setVariantSetIds([getTestVariantSet().id])
-        callSet.setInfo(Collections.emptyMap())
+
+        List<CharSequence> variantSetIds = new ArrayList<>()
+        variantSetIds.add(getTestVariantSet().getId())
+        callSet.setVariantSetIds(variantSetIds)
+
+        callSet.setInfo(new HashMap<CharSequence, List<CharSequence>>())
 
         return callSet
     }
@@ -29,8 +33,12 @@ public class TestData {
         CallSet callSet = new CallSet()
         callSet.setId("test-callset-2")
         callSet.setSampleId("test-bio-sample-2")
-        callSet.setVariantSetIds([getTestVariantSet().id])
-        callSet.setInfo(Collections.emptyMap())
+
+        List<CharSequence> variantSetIds = new ArrayList<>()
+        variantSetIds.add(getTestVariantSet().getId())
+        callSet.setVariantSetIds(variantSetIds)
+
+        callSet.setInfo(new HashMap<CharSequence, List<CharSequence>>())
 
         return callSet
     }
@@ -39,8 +47,8 @@ public class TestData {
         Call call = new Call()
         call.setCallSetId(getTestCallSet1().id)
         call.setGenotype([1, 2])
-        call.setGenotypeLikelihood([])
-        call.setInfo(Collections.emptyMap())
+        call.setGenotypeLikelihood(new ArrayList<Double>())
+        call.setInfo(new HashMap<CharSequence, List<CharSequence>>())
 
         return call
     }
@@ -49,8 +57,8 @@ public class TestData {
         Call call = new Call()
         call.setCallSetId(getTestCallSet2().id)
         call.setGenotype([3, 4])
-        call.setGenotypeLikelihood([])
-        call.setInfo(Collections.emptyMap())
+        call.setGenotypeLikelihood(new ArrayList<Double>())
+        call.setInfo(new HashMap<CharSequence, List<CharSequence>>())
 
         return call
     }
@@ -61,9 +69,9 @@ public class TestData {
         variant.setReferenceBases("test-reference-bases")
         variant.setAlternateBases(["test-alternate-base-1", "test-alternate-base-2", "test-alternate-base-3"])
         variant.setCalls([getTestCall1(), getTestCall2()])
-        variant.setVariantSetId(getTestVariantSet().id)
-        variant.setNames([])
-        variant.setInfo(Collections.emptyMap())
+        variant.setVariantSetId(getTestVariantSet().getId())
+        variant.setNames(new ArrayList<CharSequence>())
+        variant.setInfo(new HashMap<CharSequence, List<CharSequence>>())
 
         return variant
     }
@@ -73,7 +81,7 @@ public class TestData {
         referenceSet.setId("test-reference-set")
         referenceSet.setAssemblyId("GRCh37")
         referenceSet.setMd5checksum("")
-        referenceSet.setSourceAccessions([])
+        referenceSet.setSourceAccessions(new ArrayList<CharSequence>())
 
         return referenceSet
     }
@@ -83,28 +91,34 @@ public class TestData {
         variantSet.setId("test-variant-set")
         variantSet.setReferenceSetId(getTestReferenceSet().id)
         variantSet.setDatasetId(getTestDataset().id)
-        variantSet.setMetadata([])
+        variantSet.setMetadata(new ArrayList<VariantSetMetadata>())
 
         return variantSet
     }
 
     static SearchDatasetsResponse getSearchDatasetsResponse() {
         SearchDatasetsResponse searchDatasetsResponse = new SearchDatasetsResponse()
-        searchDatasetsResponse.setDatasets([getTestDataset()])
+        List<Dataset> datasets = new ArrayList<>()
+        datasets.add(getTestDataset())
+        searchDatasetsResponse.setDatasets(datasets)
 
         return searchDatasetsResponse
     }
 
     static SearchVariantSetsResponse getSearchVariantSetsResponse() {
         SearchVariantSetsResponse searchVariantSetsResponse = new SearchVariantSetsResponse()
-        searchVariantSetsResponse.setVariantSets([getTestVariantSet()])
+        List<VariantSet> variantSets = new ArrayList<>()
+        variantSets.add(getTestVariantSet())
+        searchVariantSetsResponse.setVariantSets(variantSets)
 
         return searchVariantSetsResponse
     }
 
     static SearchVariantsResponse getSearchVariantsResponse() {
         SearchVariantsResponse searchVariantsResponse = new SearchVariantsResponse()
-        searchVariantsResponse.setVariants([getTestVariant()])
+        List<Variant> variants = new ArrayList<>()
+        variants.add(getTestVariant())
+        searchVariantsResponse.setVariants(variants)
 
         return searchVariantsResponse
     }
@@ -118,15 +132,18 @@ public class TestData {
 
     static SearchVariantSetsRequest getSearchVariantSetsRequest() {
         SearchVariantSetsRequest searchVariantSetsRequest = new SearchVariantSetsRequest()
-        searchVariantSetsRequest.setDatasetIds([getTestDataset().id])
+        List<CharSequence> datasetIds = new ArrayList<>()
+        datasetIds.add(getTestDataset().getId())
+        searchVariantSetsRequest.setDatasetIds(datasetIds)
         searchVariantSetsRequest.setPageToken("")
-
         return searchVariantSetsRequest
     }
 
     static SearchVariantsRequest getSearchVariantsRequest() {
         SearchVariantsRequest searchVariantsRequest = new SearchVariantsRequest()
-        searchVariantsRequest.setVariantSetIds([getTestVariantSet().id])
+        List<CharSequence> variantSetIds = new ArrayList<>()
+        variantSetIds.add(getTestVariantSet().getId())
+        searchVariantsRequest.setVariantSetIds(variantSetIds)
         searchVariantsRequest.setReferenceName("test-reference-name")
         searchVariantsRequest.setStart(100L)
         searchVariantsRequest.setEnd(101L)
