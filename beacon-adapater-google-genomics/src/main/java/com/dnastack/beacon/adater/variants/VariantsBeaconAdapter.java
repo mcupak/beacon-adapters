@@ -191,7 +191,8 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
     }
 
     private long calculateMatchingGenotypesCount(Variant variant, String alternateBases) {
-        int requestedGenotype = variant.getAlternateBases().indexOf(alternateBases) + 1;
+        int requestedGenotype = variant.getAlternateBases().stream().map(CharSequence::toString)
+                .collect(Collectors.toList()).indexOf(alternateBases) + 1;
 
         return variant.getCalls()
                 .stream()
@@ -220,8 +221,9 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
     }
 
     private boolean basesMatchVariant(Variant variant, String referenceBases, String alternateBases) {
-        return StringUtils.equals(variant.getReferenceBases(), referenceBases) && variant.getAlternateBases()
-                .contains(alternateBases);
+        return StringUtils.equals(variant.getReferenceBases(), referenceBases)
+                && variant.getAlternateBases().stream().map(CharSequence::toString).collect(Collectors.toList())
+                    .contains(alternateBases);
     }
 
     private List<String> getDatasetIdsToSearch(List<String> requestedDatasetIds) throws BeaconAlleleRequestException {

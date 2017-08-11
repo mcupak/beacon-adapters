@@ -14,10 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Ga4ghRetroServiceFactory {
 
-    /**
-     * GsonConverterFactory is thread-safe. Can declare it static.
-     */
-    private static final ProtoJsonConverter CONVERTER_FACTORY = ProtoJsonConverter.create();
+    private static final AvroJsonConverter AVRO_JSON_CONVERTER = AvroJsonConverter.create();
 
     private static OkHttpClient createHttpClient() {
         return new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES)
@@ -64,7 +61,7 @@ public class Ga4ghRetroServiceFactory {
 
     public static Ga4ghRetroService create(String baseUrl) {
         return new Retrofit.Builder().client(createHttpClient())
-                .addConverterFactory(CONVERTER_FACTORY)
+                .addConverterFactory(AVRO_JSON_CONVERTER)
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);
@@ -72,7 +69,7 @@ public class Ga4ghRetroServiceFactory {
 
     public static Ga4ghRetroService create(String baseUrl, String apiKey) {
         return new Retrofit.Builder().client(createHttpClient(apiKey))
-                .addConverterFactory(CONVERTER_FACTORY)
+                .addConverterFactory(AVRO_JSON_CONVERTER)
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);

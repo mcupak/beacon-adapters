@@ -23,7 +23,7 @@ class BeaconResponseUnknownDatasetTest extends BaseTest {
         def referenceName = getSearchVariantsRequest().referenceName
         def start = getSearchVariantsRequest().start
         def referenceBases = getTestVariant().referenceBases
-        def alternateBases = getTestVariant().getAlternateBases(0)
+        def alternateBases = getTestVariant().getAlternateBases().get(0)
         def assemblyId = getTestReferenceSet().assemblyId
         def datasetIds = ["unknown-dataset"]
         def includeDatasetResponses = true

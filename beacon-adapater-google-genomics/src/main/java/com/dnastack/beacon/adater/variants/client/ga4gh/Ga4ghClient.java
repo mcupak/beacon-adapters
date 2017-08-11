@@ -4,7 +4,9 @@ import com.dnastack.beacon.adater.variants.client.ga4gh.exceptions.Ga4ghClientEx
 import com.dnastack.beacon.adater.variants.client.ga4gh.model.Ga4ghClientRequest;
 import com.dnastack.beacon.adater.variants.client.ga4gh.retro.Ga4ghRetroService;
 import com.dnastack.beacon.adater.variants.client.ga4gh.retro.Ga4ghRetroServiceFactory;
+import org.apache.avro.data.RecordBuilder;
 import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.avro.specific.SpecificRecordBuilderBase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.ga4gh.beacon.Beacon;
@@ -85,7 +87,7 @@ public class Ga4ghClient {
     private <REQUEST extends SpecificRecordBase, RESPONSE> List<RESPONSE> requestAllResponsePages(REQUEST request, RequestExecutor<REQUEST, RESPONSE> requestExecutor) throws Ga4ghClientException {
         List<RESPONSE> responsePages = new ArrayList<>();
 
-        String nextPageToken = "";
+        CharSequence nextPageToken = "";
         do {
             RESPONSE responsePage = loadResponsePage(request, requestExecutor, nextPageToken);
             responsePages.add(responsePage);
@@ -96,11 +98,9 @@ public class Ga4ghClient {
         return responsePages;
     }
 
-    private <REQUEST extends SpecificRecordBase, RESPONSE> RESPONSE loadResponsePage(REQUEST request, RequestExecutor<REQUEST, RESPONSE> requestExecutor, String nextPageToken) throws Ga4ghClientException {
-        invokeMethod(request, "setPageToken", nextPageToken);
-        //noinspection unchecked
-//        REQUEST requestWithPageToken = (REQUEST) requestBuilder.build();
-        return requestExecutor.execute(request);
+    private <REQUEST extends SpecificRecordBase, RESPONSE> RESPONSE loadResponsePage(REQUEST requestBuilder, RequestExecutor<REQUEST, RESPONSE> requestExecutor, CharSequence nextPageToken) throws Ga4ghClientException {
+        invokeMethod(requestBuilder, "setPageToken", nextPageToken);
+        return requestExecutor.execute(requestBuilder);
     }
 
     @SuppressWarnings("unchecked")

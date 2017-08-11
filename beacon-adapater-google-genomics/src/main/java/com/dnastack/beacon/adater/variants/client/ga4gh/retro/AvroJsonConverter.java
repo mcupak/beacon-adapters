@@ -1,19 +1,15 @@
 package com.dnastack.beacon.adater.variants.client.ga4gh.retro;
 
-import com.google.protobuf.GeneratedMessage;
-import com.google.protobuf.MessageLite;
-import com.google.protobuf.MessageOrBuilder;
-import com.google.protobuf.util.JsonFormat;
+import com.dnastack.beacon.adater.variants.client.ga4gh.utils.AvroConverter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.avro.specific.SpecificRecordBase;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
 /**
@@ -23,10 +19,10 @@ import java.lang.reflect.Type;
  * @author Miro Cupak (mirocupak@gmail.com)
  * @version 1.0
  */
-public class ProtoJsonConverter extends Converter.Factory {
+public class AvroJsonConverter extends Converter.Factory {
 
-    public static ProtoJsonConverter create() {
-        return new ProtoJsonConverter();
+    public static AvroJsonConverter create() {
+        return new AvroJsonConverter();
     }
 
     private boolean isConvertible(Type type) {
@@ -39,7 +35,7 @@ public class ProtoJsonConverter extends Converter.Factory {
         }
 
         Class<?> clazz = (Class) type;
-        if (!(MessageLite.class.isAssignableFrom(clazz))) {
+        if (!(SpecificRecordBase.class.isAssignableFrom(clazz))) {
             return null;
         }
 
@@ -55,21 +51,21 @@ public class ProtoJsonConverter extends Converter.Factory {
 
         return new Converter<ResponseBody, Object>() {
 
-            private GeneratedMessage.Builder createBuilder(Class<?> clazz) {
+            private SpecificRecordBase createObject(Class<?> clazz) {
                 try {
-                    return (GeneratedMessage.Builder) MethodUtils.invokeStaticMethod(clazz, "newBuilder");
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    throw new RuntimeException("Couldn't create builder", e);
+                    return  (SpecificRecordBase) clazz.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException("Couldn't create object", e);
                 }
             }
 
             @Override
             public Object convert(ResponseBody responseBody) throws IOException {
                 String json = responseBody.string();
-                GeneratedMessage.Builder builder = createBuilder(clazz);
-                JsonFormat.parser().merge(json, builder);
 
-                return builder.build();
+                SpecificRecordBase specificRecordBase = createObject(clazz);
+
+                return AvroConverter.jsonToAvro(json, specificRecordBase.getSchema());
             }
         };
     }
@@ -81,8 +77,8 @@ public class ProtoJsonConverter extends Converter.Factory {
         }
 
         return o -> {
-            MessageOrBuilder message = (MessageOrBuilder) o;
-            String json = JsonFormat.printer().print(message);
+            SpecificRecordBase message = (SpecificRecordBase) o;
+            String json = AvroConverter.avroToJson(message);
 
             return RequestBody.create(MediaType.parse("application/json"), json);
         };

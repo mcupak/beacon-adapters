@@ -42,7 +42,7 @@ class BeaconResponseProvidedDatasetsTest extends BaseTest {
     }
 
     private void testGetMethod(BeaconAlleleRequest request) {
-        BeaconAlleleResponse getMethodResponse = BaseTest.ADAPTER.getBeaconAlleleResponse(
+        BeaconAlleleResponse getMethodResponse = ADAPTER.getBeaconAlleleResponse(
                 request.getReferenceName(),
                 request.getStart(),
                 request.getReferenceBases(),
@@ -54,13 +54,13 @@ class BeaconResponseProvidedDatasetsTest extends BaseTest {
     }
 
     private void testPostMethod(BeaconAlleleRequest request) {
-        BeaconAlleleResponse postMethodResponse = BaseTest.ADAPTER.getBeaconAlleleResponse(request);
+        BeaconAlleleResponse postMethodResponse = ADAPTER.getBeaconAlleleResponse(request);
         checkAssertions(postMethodResponse, request)
     }
 
     private void checkAssertions(BeaconAlleleResponse response, BeaconAlleleRequest request) {
         assertThat(response.alleleRequest).isEqualTo(request)
-        assertThat(response.beaconId).isEqualTo(BaseTest.ADAPTER.getBeacon().getId())
+        assertThat(response.beaconId).isEqualTo(ADAPTER.getBeacon().getId())
         assertThat(response.datasetAlleleResponses).hasSize(1)
         assertThat(response.error).isNull()
         assertThat(response.exists).isTrue()
