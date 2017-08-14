@@ -3,6 +3,7 @@ package com.dnastack.beacon.adater.variants.client.ga4gh.retro;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,9 @@ public class Ga4ghRetroServiceFactory {
     private static final AvroJsonConverter AVRO_JSON_CONVERTER = AvroJsonConverter.create();
 
     private static OkHttpClient createHttpClient() {
+        HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
+        bodyInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         return new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request()
@@ -27,10 +31,14 @@ public class Ga4ghRetroServiceFactory {
                             .build();
                     return chain.proceed(request);
                 })
+                .addInterceptor(bodyInterceptor)
                 .build();
     }
 
     private static OkHttpClient createHttpClient(String apiKey) {
+        HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
+        bodyInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         return new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request()
@@ -56,6 +64,7 @@ public class Ga4ghRetroServiceFactory {
 
                     return chain.proceed(request);
                 })
+                .addInterceptor(bodyInterceptor)
                 .build();
     }
 
