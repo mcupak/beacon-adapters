@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +71,7 @@ public class Ga4ghRetroServiceFactory {
 
     public static Ga4ghRetroService create(String baseUrl) {
         return new Retrofit.Builder().client(createHttpClient())
-                .addConverterFactory(AVRO_JSON_CONVERTER)
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);
@@ -78,7 +79,7 @@ public class Ga4ghRetroServiceFactory {
 
     public static Ga4ghRetroService create(String baseUrl, String apiKey) {
         return new Retrofit.Builder().client(createHttpClient(apiKey))
-                .addConverterFactory(AVRO_JSON_CONVERTER)
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);

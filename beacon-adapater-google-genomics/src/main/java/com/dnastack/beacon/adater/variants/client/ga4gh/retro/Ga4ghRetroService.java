@@ -1,8 +1,6 @@
 package com.dnastack.beacon.adater.variants.client.ga4gh.retro;
 
-import org.ga4gh.methods.*;
-import org.ga4gh.models.CallSet;
-import org.ga4gh.models.ReferenceSet;
+import com.dnastack.beacon.adater.variants.client.ga4gh.model.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
