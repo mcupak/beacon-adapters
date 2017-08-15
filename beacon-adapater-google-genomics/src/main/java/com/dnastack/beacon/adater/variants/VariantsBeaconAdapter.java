@@ -233,7 +233,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
         return loadAllDatasets().stream().map(Dataset::getId).map(CharSequence::toString).collect(Collectors.toList());
     }
 
-    private List<com.dnastack.beacon.adater.variants.client.ga4gh.model.Dataset> loadAllDatasets() throws BeaconAlleleRequestException {
+    private List<Dataset> loadAllDatasets() throws BeaconAlleleRequestException {
         try {
             return ga4ghClient.searchDatasets();
         } catch (Ga4ghClientException e) {

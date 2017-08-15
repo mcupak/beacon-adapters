@@ -112,14 +112,10 @@ public class Ga4ghClient {
     }
 
     public List<Dataset> searchDatasets() throws Ga4ghClientException {
-        SearchDatasetsRequest request = SearchDatasetsRequest.builder().build();
-
         List<SearchDatasetsResponse> allResponsePages = new ArrayList<>();
 
         for (Ga4ghRetroService ga4ghRetroService : ga4ghRetroServices.values()) {
-            allResponsePages.addAll(requestAllResponsePages(request,
-                    pagedRequest -> executeCall(ga4ghRetroService.searchDatasets(
-                            pagedRequest))));
+            allResponsePages.add(executeCall(ga4ghRetroService.searchDatasets(beacon.getOrganization().getId())));
         }
 
         return allResponsePages.stream()

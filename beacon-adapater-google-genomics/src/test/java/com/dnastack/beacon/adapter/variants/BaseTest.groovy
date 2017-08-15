@@ -2,7 +2,6 @@ package com.dnastack.beacon.adapter.variants
 
 
 import com.dnastack.beacon.adater.variants.VariantsBeaconAdapter
-import com.dnastack.beacon.adater.variants.client.ga4gh.utils.AvroConverter
 import com.dnastack.beacon.utils.AdapterConfig
 import com.dnastack.beacon.utils.ConfigValue
 import com.github.tomakehurst.wiremock.WireMockServer
@@ -14,7 +13,6 @@ import org.testng.annotations.AfterMethod
 import org.testng.annotations.AfterSuite
 import org.testng.annotations.BeforeSuite
 import org.testng.annotations.Test
-import retrofit2.converter.gson.GsonConverterFactory
 
 import static com.dnastack.beacon.adapter.variants.TestData.*
 import static com.dnastack.beacon.adater.variants.client.ga4gh.retro.Ga4ghRetroService.*
@@ -119,8 +117,7 @@ public abstract class BaseTest {
     }
 
     private setupSearchDatasetMapping() {
-        MOCK_GA4GH_SERVER.stubFor(post(urlEqualTo("/$DATASET_SEARCH_PATH"))
-                .withRequestBody(equalToJson(GSON.toJson(getSearchDatasetsRequest())))
+        MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$DATASET_SEARCH_GET_PATH/projectId=variant_org"))
 
                 .willReturn(aResponse()
                 .withBody(GSON.toJson(getSearchDatasetsResponse()))))

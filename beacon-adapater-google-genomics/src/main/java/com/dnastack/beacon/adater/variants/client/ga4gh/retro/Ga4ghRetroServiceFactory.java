@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Ga4ghRetroServiceFactory {
 
-    private static final AvroJsonConverter AVRO_JSON_CONVERTER = AvroJsonConverter.create();
-
     private static OkHttpClient createHttpClient() {
         HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
         bodyInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

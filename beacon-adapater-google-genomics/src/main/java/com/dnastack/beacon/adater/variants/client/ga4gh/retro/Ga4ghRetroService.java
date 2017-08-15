@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 
 public interface Ga4ghRetroService {
 
-    String DATASET_SEARCH_PATH = "datasets/search";
+    String DATASET_SEARCH_GET_PATH = "datasets";
     String VARIANT_SETS_SEARCH_PATH = "variantsets/search";
     String VARIANTS_SEARCH_PATH = "variants/search";
     String REFERENCE_SETS_GET_PATH = "referencesets";
@@ -23,9 +23,10 @@ public interface Ga4ghRetroService {
 
     String REFERENCE_SET_ID_PARAM = "id";
     String CALL_SET_ID_PARAM = "id";
+    String PROJECT_ID = "id";
 
-    @POST(DATASET_SEARCH_PATH)
-    Call<SearchDatasetsResponse> searchDatasets(@Body SearchDatasetsRequest request);
+    @GET(DATASET_SEARCH_GET_PATH + "/projectId={id}")
+    Call<SearchDatasetsResponse> searchDatasets(@Path(PROJECT_ID) String id);
 
     @POST(VARIANTS_SEARCH_PATH)
     Call<SearchVariantsResponse> searchVariants(@Body SearchVariantsRequest request);
