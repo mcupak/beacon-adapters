@@ -3,7 +3,9 @@ package com.dnastack.beacon.adater.variants.client.ga4gh.retro;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,12 +16,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class Ga4ghRetroServiceFactory {
 
-    /**
-     * GsonConverterFactory is thread-safe. Can declare it static.
-     */
-    private static final ProtoJsonConverter CONVERTER_FACTORY = ProtoJsonConverter.create();
-
     private static OkHttpClient createHttpClient() {
+        HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
+        bodyInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         return new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request()
@@ -30,10 +30,14 @@ public class Ga4ghRetroServiceFactory {
                             .build();
                     return chain.proceed(request);
                 })
+                .addInterceptor(bodyInterceptor)
                 .build();
     }
 
     private static OkHttpClient createHttpClient(String apiKey) {
+        HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
+        bodyInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         return new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request()
@@ -59,12 +63,13 @@ public class Ga4ghRetroServiceFactory {
 
                     return chain.proceed(request);
                 })
+                .addInterceptor(bodyInterceptor)
                 .build();
     }
 
     public static Ga4ghRetroService create(String baseUrl) {
         return new Retrofit.Builder().client(createHttpClient())
-                .addConverterFactory(CONVERTER_FACTORY)
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);
@@ -72,7 +77,7 @@ public class Ga4ghRetroServiceFactory {
 
     public static Ga4ghRetroService create(String baseUrl, String apiKey) {
         return new Retrofit.Builder().client(createHttpClient(apiKey))
-                .addConverterFactory(CONVERTER_FACTORY)
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
                 .build()
                 .create(Ga4ghRetroService.class);

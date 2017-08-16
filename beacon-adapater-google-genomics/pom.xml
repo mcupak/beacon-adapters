@@ -16,7 +16,7 @@
         <version.javaee.api>7.0</version.javaee.api>
         <version.beacon.api>0.3.0</version.beacon.api>
         <version.beacon.adapter.api>1.0-SNAPSHOT</version.beacon.adapter.api>
-        <version.ga4gh.schema>0.6.0a10</version.ga4gh.schema>
+        <version.ga4gh.schema>0.5.1</version.ga4gh.schema>
         <version.protobuf>3.0.0-beta-3</version.protobuf>
         <version.retrofit>2.3.0</version.retrofit>
         <version.commons.lang>3.4</version.commons.lang>
@@ -47,16 +47,21 @@
             <artifactId>beacon-adapter-api</artifactId>
             <version>${version.beacon.adapter.api}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ga4gh</groupId>-->
+            <!--<artifactId>ga4gh-schemas</artifactId>-->
+            <!--<version>${version.ga4gh.schema}</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>org.ga4gh</groupId>
-            <artifactId>ga4gh-schemas</artifactId>
+            <groupId>org.opencb.ga4gh</groupId>
+            <artifactId>ga4gh</artifactId>
             <version>${version.ga4gh.schema}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java-util</artifactId>
-            <version>${version.protobuf}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.google.protobuf</groupId>-->
+            <!--<artifactId>protobuf-java-util</artifactId>-->
+            <!--<version>${version.protobuf}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
@@ -96,6 +101,26 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-avro</artifactId>
+            <version>2.8.5</version>
         </dependency>
     </dependencies>
 
