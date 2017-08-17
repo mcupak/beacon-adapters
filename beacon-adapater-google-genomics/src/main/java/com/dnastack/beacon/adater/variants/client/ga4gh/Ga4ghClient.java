@@ -29,6 +29,7 @@ public class Ga4ghClient {
 
     private Beacon beacon;
     private HashMap<String, Ga4ghRetroService> ga4ghRetroServices;
+    private String projectId;
 
     /**
      * A function that returns a single response page for the given request and throws {@link Ga4ghClientException} on
@@ -42,6 +43,7 @@ public class Ga4ghClient {
 
     public Ga4ghClient(Ga4ghClientRequest request) {
         this.beacon = request.getBeacon();
+        this.projectId = request.getProjectId();
         this.ga4ghRetroServices = new HashMap<>();
 
         if (request.getApiKey() != null) {
@@ -115,7 +117,7 @@ public class Ga4ghClient {
         List<SearchDatasetsResponse> allResponsePages = new ArrayList<>();
 
         for (Ga4ghRetroService ga4ghRetroService : ga4ghRetroServices.values()) {
-            allResponsePages.add(executeCall(ga4ghRetroService.searchDatasets(beacon.getOrganization().getId())));
+            allResponsePages.add(executeCall(ga4ghRetroService.searchDatasets(projectId)));
         }
 
         return allResponsePages.stream()

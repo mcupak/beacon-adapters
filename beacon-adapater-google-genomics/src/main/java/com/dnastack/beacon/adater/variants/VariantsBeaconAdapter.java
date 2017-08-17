@@ -69,6 +69,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
         List<ConfigValue> configValues = adapterConfig.getConfigValues();
         Beacon beacon = null;
         String apiKey = null;
+        String projectId = null;
 
         for (ConfigValue configValue : configValues) {
             switch (configValue.getName()) {
@@ -80,6 +81,9 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
                     break;
                 case "apiKey":
                     apiKey = configValue.getValue();
+                    break;
+                case "projectId":
+                    projectId = configValue.getValue();
                     break;
 
             }
@@ -93,6 +97,7 @@ public class VariantsBeaconAdapter implements BeaconAdapter {
         ga4ghClient = new Ga4ghClient(Ga4ghClientRequest.builder()
                 .beacon(beacon)
                 .apiKey(apiKey)
+                .projectId(projectId)
                 .build());
     }
 

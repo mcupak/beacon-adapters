@@ -13,10 +13,13 @@ import org.ga4gh.beacon.Beacon;
 @Builder
 @Getter
 public class Ga4ghClientRequest {
-    
+
     private final String apiKey;
 
     @NonNull
     private final Beacon beacon;
+
+    @NonNull
+    private final String projectId;
 
 }

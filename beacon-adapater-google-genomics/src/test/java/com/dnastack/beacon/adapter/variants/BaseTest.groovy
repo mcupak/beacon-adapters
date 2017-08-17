@@ -57,7 +57,7 @@ public abstract class BaseTest {
 
         ADAPTER = new VariantsBeaconAdapter()
 
-        def configValues = [new ConfigValue("beaconJsonFile", beaconJson)]
+        def configValues = [new ConfigValue("beaconJsonFile", beaconJson), new ConfigValue("projectId", "id")]
 
         def adapterConfig = new AdapterConfig("Variants Test Adapter", VariantsBeaconAdapter.getName(), configValues)
         ADAPTER.initAdapter(adapterConfig)
@@ -117,7 +117,7 @@ public abstract class BaseTest {
     }
 
     private setupSearchDatasetMapping() {
-        MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$DATASET_SEARCH_GET_PATH/projectId=variant_org"))
+        MOCK_GA4GH_SERVER.stubFor(get(urlEqualTo("/$DATASET_SEARCH_GET_PATH/projectId=id"))
 
                 .willReturn(aResponse()
                 .withBody(GSON.toJson(getSearchDatasetsResponse()))))
