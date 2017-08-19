@@ -1,0 +1,17 @@
+{
+  "id" : "id",
+  "title" : "Patient with a phenotype",
+  "variants" : [ {
+    "assembly" : "GRCh37",
+    "startPosition" : 10571,
+    "endPosition" : 10572,
+    "refBases" : "A",
+    "altBases" : "AC"
+  }, {
+    "assembly" : "GRCh37",
+    "startPosition" : 10572,
+    "endPosition" : 10573,
+    "refBases" : "A",
+    "altBases" : "BC"
+  } ]
+}
