@@ -22,6 +22,8 @@
         <version.surfire>2.19.1</version.surfire>
         <version.testng>6.9.10</version.testng>
         <version.assertj>3.4.1</version.assertj>
+        <hapi-fhir-base.version>2.5</hapi-fhir-base.version>
+        <hapi-fhir-structures-dstu3.version>2.5</hapi-fhir-structures-dstu3.version>
     </properties>
 
     <dependencies>
@@ -47,11 +49,6 @@
             <version>${version.ga4gh.schema}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${version.testng}</version>
@@ -62,6 +59,16 @@
             <artifactId>assertj-core</artifactId>
             <version>${version.assertj}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-base</artifactId>
+            <version>${hapi-fhir-base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-structures-dstu3</artifactId>
+            <version>${hapi-fhir-structures-dstu3.version}</version>
         </dependency>
     </dependencies>
 
