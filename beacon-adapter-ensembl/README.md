@@ -16,7 +16,7 @@ There is one required parameter for the configuration that must be supplied as C
 |--- | ---|
 | "url" | URL for database |
 
-##Building
+## Building
 
 Build the project:
 

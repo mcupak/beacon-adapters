@@ -19,7 +19,7 @@ There is one required parameter for the configuration that must be supplied as C
 | "apiKey" | [Google application API Key](https://cloud.google.com/genomics/auth#APIKey) |
 | "projectId" | [The Google Cloud project ID to list datasets for](https://cloud.google.com/genomics/reference/rest/v1/datasets/list) |
 
-##Building
+## Building
 
 Build the project:
 

@@ -18,7 +18,7 @@ There is one required parameter for the configuration that must be supplied as C
 | "beaconJson" | JSON string that describes this beacon |
 | "url" | URL for database |
 
-##Building
+## Building
 
 Build the project:
 

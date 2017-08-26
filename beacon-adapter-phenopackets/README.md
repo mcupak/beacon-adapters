@@ -17,7 +17,7 @@ There is one required parameter for the configuration that must be supplied as C
 | "phenoPacketFile" | Path to a file that describes this phenopacket |
 | "phenoPacket" | JSON string that describes this phenopacket |
 
-##Building
+## Building
 
 Build the project:
 
